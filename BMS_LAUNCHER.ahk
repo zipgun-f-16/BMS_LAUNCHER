@@ -183,7 +183,7 @@ WinSet, TransColor, %CustomColor%
 gui, O:new, +LastFound  +ToolWindow
 Gui, O:Color, %CustomColor%
 Gui, O:Menu, MenuBar
-Gui, O:Add, Picture, xm+0 ym+0 0x4000000 vback +AltSubmit, %A_ScriptDir%\launcher.png
+Gui, O:Add, Picture, xm+0 ym+0 0x4000000 vback +AltSubmit, %bgImage%
 Gui, O:Font, s10, Verdana  
 Gui, O:Add, GroupBox, xm+%tabX% ym+%tabY%  w%tabWdt% h%tabHgt%  Section w%secW% h%secH% hwndObox E0x00000020 -wrap,
 
@@ -324,7 +324,7 @@ num := 6
 ;Gui, Tab, Tools
 gui, TO:new, +LastFound +ToolWindow
 Gui, TO:Menu, MenuBar
-Gui, TO:Add, Picture, xm+0 ym+0 0x4000000 vback +AltSubmit, %A_ScriptDir%\launcher.png
+Gui, TO:Add, Picture, xm+0 ym+0 0x4000000 vback +AltSubmit, %bgImage%
 Gui, TO:Color, %CustomColor%
 Gui, TO:Add, GroupBox, xm+%tabX% ym+%tabY%  w%tabWdt% h%tabHgt%  Section w%secW% h%secH% hwndTObox E0x00000020 ,
 Gui, TO:Font, s10 bold, Verdana  
@@ -419,7 +419,7 @@ BuildTheaterGui:
 {
 gui, TH:new, +LastFound +ToolWindow
 Gui, TH:Menu, MenuBar
-Gui, TH:Add, Picture, xm+0 ym+0 0x4000000 vback +AltSubmit, %A_ScriptDir%\launcher.png
+Gui, TH:Add, Picture, xm+0 ym+0 0x4000000 vback +AltSubmit, %bgImage%
 Gui, TH:Add, GroupBox, xm+%tabX% ym+%tabY%  w%tabWdt% h%tabHgt%  Section w%secW% h%secH% hwndTHbox E0x00000020 ,
 	gosub TheaterGui
 theaterBuilt := true
