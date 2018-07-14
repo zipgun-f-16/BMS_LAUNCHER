@@ -1,5 +1,8 @@
 ﻿#SingleInstance force
-
+;
+;   BMS LAUNCHER by ZIPGUN  ©2018
+;	V0.2	14Jul18
+;
 G_Start:
 {
 ;
@@ -167,6 +170,8 @@ if(ivcV == 1){
 		Gui, L:Add, Text, xs+60 ys+200 w250 +E0x20  +BackgroundTrans cWhite center  vivcTxt , 
 		Gui, L:Add, Text, xs+60 ys+220 w250 +E0x20 +BackgroundTrans cWhite center vcurrPWD  givcVUpd,
 	}
+		Gui, Font, s4 
+		Gui, L:Add, Text, xs+10 ys+240 w50 +E0x20 +BackgroundTrans cWhite,©2018 ZIPGUN  
 ;Gui, Font, s10 bold, Verdana  
 
 WinSet, TransColor, %CustomColor%

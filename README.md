@@ -20,3 +20,8 @@ PhoneBook: The BMS program does not support copy-paste into the COMM menu (phone
 This is beta software, please back-up any files prior to use (theater.tdf, and phonebook.ini are modified by the utility).
 
 Thanks for trying it and watch for future enhancements.
+
+;
+;   BMS LAUNCHER by ZIPGUN  ©2018
+;	V0.2	14Jul18
+;
