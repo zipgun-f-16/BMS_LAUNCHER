@@ -23,5 +23,6 @@ Thanks for trying it and watch for future enhancements.
 
 ;
 ;   BMS LAUNCHER by ZIPGUN  ©2018
+;	V0.4	18Jul18		-	Cleaned up code & repainted ICON to make more visible
 ;	V0.3	15Jul18
 ;
