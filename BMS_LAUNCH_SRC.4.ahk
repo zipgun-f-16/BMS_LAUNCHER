@@ -1,6 +1,7 @@
 ﻿#SingleInstance force
 ;
 ;   BMS LAUNCHER by ZIPGUN  ©2018
+;	V0.4	18Jul18		-	Cleaned up code & repainted ICON to make more visible
 ;	V0.3	16Jul18
 ;
 G_Start:
@@ -36,11 +37,11 @@ if(!fileOK){
 	IniWrite, val=0`npwd=`ntxt=, %launchIni%, IVC_PW
 	IniWrite, val=64, %launchIni%, 64_32
 	IniWrite, Key=Falcon BMS 4.33 U1\, %launchIni%, BMS_Version
-	IniWrite, ver=v.3, %launchIni%, Launcher
+	IniWrite, ver=v.4, %launchIni%, Launcher
 }
 
 	IniRead, iniVer, %launchIni%, Launcher, ver
-if(iniVer!= "v.3"){
+if(iniVer!= "v.4"){
 	msgBox Wrong Version`r`n - Delete Launcher.ini from your Config folder`r`n - And restart
 	ExitApp
 	}
@@ -54,7 +55,7 @@ phonebook := BMS_DIR . "\User\Config\phonebkn.ini"
 					}
 				}
 DEV	:= 0
-mainUp := 0
+
 tabWdt := 300
 tabHgt := 250
 bgPicW := 600
@@ -67,16 +68,15 @@ secW := (tabWdt)-5
 secH := tabHgt-10
 yOff := 10
 xOff := 10
-bgImage := BMS_DIR . "\User\Config\launcher.png"
+bgImage := BMS_DIR . "\User\Config\launcher.jpg"
 ifNotExist, %bgImage%
-	fileInstall, C:\out\launch\launcher.png, %bgImage%
-icon := BMS_DIR . "\User\Config\F16.ico"
+	fileInstall, C:\launcher.jpg, %bgImage%
+icon := BMS_DIR . "\User\Config\F-16.ico"
 ifNotExist, %icon%
-	fileInstall, C:\out\Launch.3\F16.ico, %icon%
+	fileInstall, C:\F-16.ico, %icon%
 Menu, Tray, Icon , %icon%
 MainFlow:
 
-;optA := []
 IniRead, WindowV, %launchIni%, Windowed, val
 IniRead, WindowT, %launchIni%, Windowed, txt
 IniRead, MonoV, %launchIni%, MonoLog, val
@@ -94,26 +94,16 @@ IniRead, ivcV, %launchIni%, IVC_PW, val
 IniRead, ivc_pw, %launchIni%, IVC_PW, pwd
 IniRead, ivcT, %launchIni%, IVC_PW, txt
 IniRead, 64_32, %launchIni%, 64_32, val
-/*
-optA[1] := WindowV
-optA[2] := MonoV
-optA[3] := MovieV
-optA[4] := AcmiV
-optA[5] := EyeV
-optA[6] := bwV
-optA[7] := ivcV
-*/
+
 if(64_32 == 0){
 	64V = 0
 	32V = 1
-;	optA[8] := 0
-;	optA[9] := 1
+
 	}
 if(64_32 == 1){
 	64V = 1
 	32V = 0
-;	optA[8] := 1
-;	optA[9] := 0
+
 	}
 empty := false  ;used in blank line check
 }
@@ -142,7 +132,7 @@ Menu, MenuBar, Add,
 Menu, MenuBar, Add,
 Menu, MenuBar, Add, CLOSE, Closer
 }
-CustomColor =  0xD6D6D6
+CustomColor =  0xD6D6D6			; custom color that will be made transparent later  
 ;
 ;-------------- launch    G U I
 ;
@@ -176,7 +166,7 @@ if(ivcV == 1){
 		Gui, L:Add, Text, xs+10 ys+240 w50 +E0x20 +BackgroundTrans cWhite,©2018 ZIPGUN
 ;Gui, Font, s10 bold, Verdana
 
-WinSet, TransColor, %CustomColor%
+WinSet, TransColor, %CustomColor%				; make background disappear
 }
 ;
 ;-------------- options   G U I
@@ -265,6 +255,9 @@ if(bwV == 1){
 		Gui, O:Add, edit, xs+240 ys+18 vbwUv gbwVUpd , ____
 		GuiControl, +hidden, bwUv
 	}
+;
+;--------------  IVC SERVER password user entry
+;
 if(ivcV == 1){
 
 		Gui, O:Add, CheckBox, xs+150 ys+70 w12 h12 vivcV givcUpd +Checked,
@@ -314,8 +307,8 @@ if(64_32 == 32)
 Gui, O:Font, s10 , Verdana
 Gui, O:Add, Text, +center cWhite +BackgroundTrans +E0x20 ,`r`r`rSee BMS Manual Pg. 20
 Gui, O:Font, s10 , Verdana
-;Gui, Add, BUTTON, xs%closeX% ys%closeY%  gLaunchHandler  +Border, Return
-WinSet, TransColor, %CustomColor%
+
+WinSet, TransColor, %CustomColor%				; make background disappear
 }
 }			; end of options gui
 ;
@@ -337,8 +330,8 @@ Gui, TO:Add, BUTTON,  givcClient hwndBTN4 cWhite, IVC Client
 ;Gui, TO:Add, BUTTON,  gAvConfig hwndBTN5 cWhite, Avionics Configurator
 Gui, TO:Add, BUTTON,  gdbEdit hwndBTN6 cWhite, Editor
 Gui, TO:Font, s10 , Verdana  ; Set 8-point Verdana.
-Gui, TO:Add, BUTTON, xs%closeX% ys%closeY%  gLaunchHandler cWhite +Border, Return
-WinSet, TransColor, %CustomColor%
+;Gui, TO:Add, BUTTON, xs%closeX% ys%closeY%  gLaunchHandler cWhite +Border, Return
+WinSet, TransColor, %CustomColor%				; make background disappear
 }
 ;
 ;---------- DISPLAY WINDOW
@@ -347,10 +340,13 @@ WinSet, TransColor, %CustomColor%
 Gui, L:Show, , BMS Launcher
 return
 }
+;
+;				Menu bar processing -- as a new optionis clicked, find current pos., hide other gui's, and show new one where the old one was
+;
 LaunchHandler:
 {
 	Gui,+LastFound
-	WinGetPos,mainx, mainy,mainw,mainh
+	WinGetPos,mainx, mainy,mainw,mainh						; discover where the window is now (user may move it)
 	Gui, O:HIDE
 	Gui, TH:HIDE
 	Gui, TO:HIDE
@@ -363,11 +359,8 @@ LaunchHandler:
 OptionHandler:
 {
 	Gui,+LastFound
-	WinGetPos,mainx, mainy,mainw,mainh
+	WinGetPos,mainx, mainy,mainw,mainh						; discover where the window is now (user may move it)
 
-
-;	WinSet, TransColor, %CustomColor%
-;	Gui, O:Show, , Options
 	Gui, O:Show, x%mainx% y%mainy% , Options
 	Gui, L:Hide
 	Gui, TH:Hide
@@ -378,7 +371,7 @@ OptionHandler:
 ToolsHandler:
 {
 	Gui,+LastFound
-	WinGetPos,mainx, mainy,mainw,mainh
+	WinGetPos,mainx, mainy,mainw,mainh						; discover where the window is now (user may move it)
 ;	Gui, L:Minimize
 	Gui, TO:Show,x%mainx% y%mainy% , TOOLS
 	Gui, L:Hide
@@ -390,7 +383,7 @@ ToolsHandler:
 TheaterHandler:
 {
 	Gui,+LastFound
-	WinGetPos,mainx, mainy,mainw,mainh
+	WinGetPos,mainx, mainy,mainw,mainh						; discover where the window is now (user may move it)
 
 	if (!theaterBuilt)
 	{
@@ -406,7 +399,7 @@ TheaterHandler:
 PhoneHandler:
 {
 	Gui,+LastFound
-	WinGetPos,mainx, mainy,mainw,mainh
+	WinGetPos,mainx, mainy,mainw,mainh						; discover where the window is now (user may move it)
 		Gui, L:Hide
 	Gui, TO:HIDE
 	Gui, TH:HIDE
@@ -438,14 +431,14 @@ Return
 ;
 ;-------------- L A U N C H   B U T T O N S  --------------------------------------------
 ;
-Launch2:
+Launch2:											; option to fire IVC server and then BMS
 {
 IniRead, ivcT, %launchIni%, IVC_PW, txt
 	runStr = "%BMS_DIR%\Bin\x86\IVC\IVC Server.exe"
 	Run, *RunAs %runStr% %ivcT%
 	sleep 10
 	}
-Launch1:
+Launch1:											; Launch BMS only
 {
 Gui, L:Destroy
 Gui, O:Destroy
@@ -541,6 +534,9 @@ if(32V == 1){
  64_32 := 32
  }
 ; MsgBox, Window=%windowV% `r`nMono=%MonoV%`r`nMovie=%MovieV%`r`n64=%64V%`r`n32=%32V%`r`n64_32=%64_32%
+;
+;	Save current options in the ini file
+;
 IniWrite, %WindowV%, %launchIni%, Windowed, val
 IniWrite, %MonoV%, %launchIni%, MonoLog, val
 IniWrite, %MovieV%, %launchIni%, NoMovie, val
@@ -548,7 +544,7 @@ IniWrite, %AcmiV%, %launchIni%, Acmi, val
 IniWrite, %EyeV%, %launchIni%, Eye, val
 IniWrite, %bwV%, %launchIni%, BW, val
 IniWrite, %64_32%, %launchIni%, 64_32, val
-if(WindowV == 1){													;change
+if(WindowV == 1){													;is it on?
 		WindowT := " -window"
 		IniWrite  %WindowT%, %launchIni%, Windowed, txt
 		Gui, Font, norm bold underline cwhite
@@ -563,7 +559,7 @@ if(WindowV == 1){													;change
 		GuiControl,,WindowVt ,windowed
 		GuiControl, move ,WindowVt ,w85
 		}
-if(MonoV == 1){													;change
+if(MonoV == 1){													;is it on?
 		MonoT := " -mono"
 		IniWrite, %MonoT%, %launchIni%, MonoLog, txt
 		Gui, Font, norm bold underline cwhite
@@ -578,7 +574,7 @@ if(MonoV == 1){													;change
 		GuiControl,,MonoVt ,mono log
 		GuiControl, move ,MonoVt ,w95
 	}
-if(MovieV == 1){													;change
+if(MovieV == 1){													;is it on?
 		MovieT := " -nomovie"
 		IniWrite, %MovieT%, %launchIni%, NoMovie, txt
 		Gui, Font, norm bold underline cwhite
@@ -593,7 +589,7 @@ if(MovieV == 1){													;change
 		GuiControl, ,MovieVt ,no movies
 		GuiControl, move ,MovieVt ,w95
 	}
-if(AcmiV == 1){													;change
+if(AcmiV == 1){													;is it on?
 		AcmiT := " -acmi"
 		IniWrite, %AcmiT%, %launchIni%, Acmi, txt
 		Gui, Font, norm bold underline cwhite
@@ -608,7 +604,7 @@ if(AcmiV == 1){													;change
 		GuiControl, ,AcmiVt ,auto acmi
 		GuiControl, move ,AcmiVt ,w95
 	}
-if(EyeV == 1){													;change
+if(EyeV == 1){													;is it on?
 		EyeT := " -ef"
 		IniWrite, %EyeT%, %launchIni%, Eye, txt
 		Gui, Font, norm bold underline cwhite
@@ -623,7 +619,7 @@ if(EyeV == 1){													;change
 		GuiControl, ,EyeVt ,eye fly
 		GuiControl, move ,EyeVt ,w60
 	}
-if(bwV == 1){													;change
+if(bwV == 1){													;is it on?
 		Gui, Font, norm bold underline cwhite
 		GuiControl, Font ,bwVt
 		GuiControl, ,bwVt ,BW (KB)
@@ -638,7 +634,7 @@ if(bwV == 1){													;change
 		GuiControl, ,bwVt ,bw (kb)
 		GuiControl, move ,EyeVt ,w95
 	}
-if(ivcV == 1){													;change
+if(ivcV == 1){													;is it on?
 		GuiControl, +checked, ivcV
 		Gui, Font, norm bold underline cwhite
 		GuiControl, Font ,ivcVt
@@ -663,7 +659,7 @@ if(ivcV == 1){													;change
 		GuiControl, move ,currPWD ,w250
 		GuiControl, move ,ivcTxt ,w250
 }
-if(64V == 1){													;change
+if(64V == 1){													;is it on?
 		Gui, Font, norm bold underline cwhite
 		GuiControl, Font ,64Vt
 		GuiControl, ,64Vt , 64 BIT
@@ -730,15 +726,7 @@ ivcClient:
 		Run, *RunAs %runStr% , %BMS_DIR%\Bin\x86\IVC
 		RETURN
 		}
-;
-;-------------- L A U N C H  AVIONICS CONFIG  B U T T O N  --------------------------------------------
-;
-AvConfig:
-{
-	runStr = "%BMS_DIR%\Bin\x86\Avionics Configurator.exe"
-		RunwAIT, *RunAs %runStr% , %BMS_DIR%\Bin\x86"
-		RETURN
-		}
+
 ;
 ;-------------- L A U N C H  DB EDITOR  B U T T O N  --------------------------------------------
 ;
@@ -862,26 +850,18 @@ changeT:
 	Gui, TH:submit, nohide
 	tt := theaterArray[cT]
 
-/*
-loop, maxT{
-	if(cT%A_Index% == 1){
-		newTheater :=
-	}
-}
-*/
-;    LV_GetText(RowText, A_EventInfo)  ; Get the text from the row's first field.
-;    ToolTip You double-clicked row number %A_EventInfo%. Text: "%RowText%"
     MsgBox, 4, , Change theater to %tt%.  Continue?
 	   IfMsgBox, No
 	   return
 		RegWrite, REG_SZ, HKEY_LOCAL_MACHINE\SOFTWARE\Benchmark Sims\%BMS_VER%, curTheater, %tt%
 		RegRead, curTheater, HKEY_LOCAL_MACHINE\SOFTWARE\Benchmark Sims\%BMS_VER%, curTheater
 
-		GuiControl, L:, CTheater , Theater`r`n %curTheater%
+		GuiControl, L:, CTheater , Theater`r`n %curTheater%		;update current theater on launch page 
 		gui, L:submit, nohide
 return
 }
-pb_build:
+
+pb_build:												; build the phone book grid
 gui, PB:new, +LastFound +ToolWindow
 Gui, PB:Menu, MenuBar
 Gui,PB: Font,CDefault,Fixedsys
@@ -895,7 +875,7 @@ Gui, PB:Add, ListView,  w700 h600 grid cWhite backgroundteal hwndpbLV1 vpbLV1 gL
 ;			SB_SetText("RIGHT CLICK ENTRY LINE TO MODIFY", 1, 2)
 gui, PB: show, x%mainx% y%mainy% w800 h700, RIGHT CLICK ENTRY LINE TO MODIFY or DELETE
 ;
-;-------- SCROLL CLICK MESSAGE
+;-------- SCROLL CLICK MESSAGE on status bar
 ;
 loop
 {
@@ -980,6 +960,10 @@ RETURN
 
 
 ;----------------   MODIFY  ----------------
+;	 modify1 shows the edit window
+;
+;	 modify2 writes the changes
+;
 Modify1:
 RowNumber := LV_GetNext()
 ModAdd:
@@ -999,11 +983,9 @@ Gui, 3:Add, Edit, x92 y219 w280 h30 vC5, %C5%
 Gui, 3:Add, Text, x12 y269 w80 h30 +Center, B/W
 Gui, 3:Add, Edit, x93 y268 w280 h30 vC6, %C6%
 Gui, 3:Add, Button, x22 y309 w90 h30 gACCEPT1, Accept
-;if(!pbNew){
-		Gui, 3:Add, Button, x152 y309 w80 h30 gPB_DELETE, DELETE
-;	}else{
-;		pbNew := False
-;	}
+
+Gui, 3:Add, Button, x152 y309 w80 h30 gPB_DELETE, DELETE
+
 Gui, 3:Add, Button, x292 y309 w70 h30 gCANCEL1, Cancel
 Gui,3:show,center, Modify or Delete Entry
 return
@@ -1017,6 +999,8 @@ gui 3:listview, LV%Tabnumber%
 ;RowNumber := LV_GetNext()
 c1:= % c1
 c2:= % c2
+;
+;get the changes from the edit window
 lv_modify(rownumber, "col1" , C1 )
 lv_modify(rownumber, "col2" , C2 )
 lv_modify(rownumber, "col3" , C3 )
