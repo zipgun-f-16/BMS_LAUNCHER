@@ -285,7 +285,9 @@ If(DEV_OK){
 Gui, L:Add, Text, xs+12 ys+120 w250 +E0x20 +BackgroundTrans cWhite vcurrOpt R3 gOptionHandler, Options: %curOpts%
 Gui, L:Add, Text, xs+12 ys+180 w250 +E0x20 +BackgroundTrans cWhite vcurrBin  gOptionHandler,  %binVer%
 Gui, l:Font, s8
-Gui, L:Add, Text, xs+12 ys+200 w250 +E0x20 +BackgroundTrans cWhite vdevBin  gOptionHandler,  %devVer%
+if(DEV_OK){
+	Gui, L:Add, Text, xs+12 ys+200 w250 +E0x20 +BackgroundTrans cWhite vdevBin  gOptionHandler,  %devVer%				;text for test/stock switch
+	}
 if(ivcV == 1){
 		Gui, L:Add, Text, xs+120 ys+200 w250 +E0x20  +BackgroundTrans cWhite center vivcTxt  , IVC Server PW
 		Gui, L:Add, Text, xs+120 ys+220 w250 +E0x20  +BackgroundTrans cWhite center vcurrPWD  givcVUpd, %ivc_pw%
@@ -294,7 +296,7 @@ if(ivcV == 1){
 		Gui, L:Add, Text, xs+120 ys+220 w250 +E0x20 +BackgroundTrans cWhite center vcurrPWD  givcVUpd,
 	}
 		Gui, Font, s4
-		Gui, L:Add, Text, xs+10 ys+240 w50 +E0x20 +BackgroundTrans cWhite,©2018 ZIPGUN
+		Gui, L:Add, Text, xs+10 ys+240 w50 +E0x20  +BackgroundTrans cWhite,©2018 ZIPGUN
 ;Gui, Font, s10 bold, Verdana
 
 WinSet, TransColor, %CustomColor%				; make background disappear
@@ -394,10 +396,10 @@ if(!DEV_OK){
 	}else{								
 		Gui, O:Add, text, xs+130 ys+20 w95 vbwDVt gOptionsUpdb  BackgroundTrans +E0x20 cWhite , DL BW (kb)
 		Gui, O:Font, s8
-		Gui, O:Add, edit, xs+220 ys+18 w60 limit6 right vbwDLv gbwVUpd434  , %yourUL%
+		Gui, O:Add, edit, xs+220 ys+18 w60 limit6 right vbwDLv gbwVUpd434  , %yourDL%
 		Gui, O:Add, text, xs+130 ys+45 w95 vbwUVt gOptionsUpdb  BackgroundTrans +E0x20 cWhite , UL BW (kb)
 		Gui, O:Font, s8
-		Gui, O:Add, edit, xs+220 ys+40 w60 limit6 right vbwULv gbwVUpd434  , %yourDL%
+		Gui, O:Add, edit, xs+220 ys+40 w60 limit6 right vbwULv gbwVUpd434  , %yourUL%
 		}
 	
 	
@@ -583,6 +585,8 @@ return
 ;-------------------------======================================================================================================-------------------------------------------------------------------
 DisplayGui:
 {
+Gui, L:Font, s8 , Verdana
+gui, L:Add, StatusBar, , Current version is %CurrVersion%
 Gui, L:Show, , BMS Launcher
 return
 }
@@ -763,6 +767,7 @@ if(!DEV_OK){
 	
 
 }												;; end of launch1
+
 ;
 ;=================================================================================================================================================================================================================================
 ;----------------------------------------------------------------------------------------- T O O L S  B U T T O N   P R O C E S S I N G  -----------------------------------------------------------------------------------------
