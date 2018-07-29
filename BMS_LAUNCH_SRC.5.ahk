@@ -901,7 +901,8 @@ GOTO OptionsUpd
 ;-------------- 4.34 DEV TEST SWITCH   --------------------------------------------
 ;
 devTest434:
-{
+
+if(DEV_OK){
 	guiControlGet devTest
 	if(devTest){															; switch to on
 			If(64_32 == 64)
@@ -942,7 +943,9 @@ guiControlGet bwV
 guiControlGet 64V
 guiControlGet 32V
 ;guiControlGet devTest
-IniRead, %devTest%, %launchIni%, devTest, val
+if(DEV_OK){
+	IniRead, %devTest%, %launchIni%, devTest, val
+	}
 if(64V == 1){
  64_32 := 64
  }
@@ -961,11 +964,7 @@ IniWrite, %AcmiV%, %launchIni%, Acmi, val
 IniWrite, %EyeV%, %launchIni%, Eye, val
 IniWrite, %bwV%, %launchIni%, BW, val
 IniWrite, %64_32%, %launchIni%, 64_32, val
-/*
-if(DEV_OK){
-	IniWrite, %devTest%, %launchIni%, devTest, val									;  Dev test EXE switch
-	}
-	*/
+
 if(WindowV == 1){													;is it on?
 		WindowT := " -window"
 		IniWrite  %WindowT%, %launchIni%, Windowed, txt
@@ -1104,7 +1103,7 @@ if(64V == 1){													;is it on?
 		GuiControl, move ,32Vt ,w60
 	}
 	
-if(devTest){													;dev test exe state?
+if(DEV_OK & devTest){													;dev test exe state?
 ;
 ;	Test fo a test EXE in Bin\.. folder
 	If(64_32 == 64)
