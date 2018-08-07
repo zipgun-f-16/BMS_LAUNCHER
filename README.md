@@ -22,6 +22,7 @@ This is beta software, please back-up any files prior to use (theater.tdf, and p
 Thanks for trying it and watch for future enhancements.
 
 ;   BMS LAUNCHER by ZIPGUN  ©2018
+
 ;	V0.6	07Aug18		-	Fixed -ef missing (eyeFly)
 
 ;	V0.5	29Jul18		-	Added Dev support (4.34)
