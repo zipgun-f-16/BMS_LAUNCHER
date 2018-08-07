@@ -1,5 +1,6 @@
 ﻿;
 ;   BMS LAUNCHER by ZIPGUN  ©2018
+;	V0.6	07Aug18		-	Fixed -ef missing (eyeFly)											
 ;	V0.5	28Jul18		-	Added Dev support (4.34)
 ;	V0.4	18Jul18		-	Cleaned up code & repainted ICON to make more visible
 ;	V0.3	16Jul18
@@ -25,7 +26,7 @@ if not (A_IsAdmin or RegExMatch(full_command_line, " /restart(?!\S)"))
 }
 
 G_Start:
-CurrVersion := "v.5"																	;; this version number for version check
+CurrVersion := "v.6"																	;; this version number for version check
 ;
 ;look for ini - if not there, create one in the proper folder 
 ;
@@ -33,6 +34,7 @@ PUB_VER := "Falcon BMS 4.33 U1"
 DEV_VER := "Falcon BMS 4.34 (Internal)"
 DEV_OK := false
 PUB_OK := false
+devTest := false
 ;:
 ;	-----		test for 4.34	------
 ;
@@ -677,7 +679,7 @@ Gui, O:Destroy
 Gui, TO:Destroy
 Gui, TH:Destroy
 Gui, PB:Destroy
-runOpts =%WindowT% %MonoT% %MovieT% %acmiT% %bwT%
+runOpts =%WindowT% %MonoT% %MovieT% %acmiT% %bwT% %EyeT%
 
 ; MsgBox, runStr = "%BMS_DIR%\Bin\x64\Falcon BMS.exe" %runOpts%
 	If(64_32 == 64)
